@@ -35,4 +35,18 @@ E-mail: <input type="text" name="email"><br>
 </form>
 </div>
 
+
+<!-- This form allows the user to upload multiple files to a server, and we are 
+using the POST method to send data -->
+<div class="form-container">
+<h1>Multiple files uploading form</h1>
+<!--The 'multipart/form-data' value is required for uploading files in forms.-->
+<form method="post" enctype="multipart/form-data">
+<input type="file" name="files[]" multiple />
+<input type="submit" value="Upload File" name="submit" />
+</form>
+
+<script src="upload.js"></script>
+</body>
+
 </html>
