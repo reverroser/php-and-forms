@@ -9,13 +9,30 @@
 </head>
 
 <body>
-
-<form action="welcome.php" method="post">
+<!-- This form sends the information that the user introduces and is sent 
+through POST method to the server. When the user clicks submit, the user
+is sent to the welcome php file and then information is displayed through echoing 
+all the variables. -->
+<div class="form-container">
+<h1>Form with POST method</h1>
+<form action="welcome_post.php" method="post">
 Name: <input type="text" name="name"><br>
 E-mail: <input type="text" name="email"><br>
 <input type="submit">
 </form>
+</div>
 
-</body>
+<!-- This form sends the information that the user introduces and is sent 
+through GET method to the server. When the user clicks submit, the user
+is sent to the welcome php file and then information is displayed through echoing 
+all the variables. -->
+<div class="form-container">
+<h1>Form with GET method</h1>
+<form action="welcome_get.php" method="get">
+Name: <input type="text" name="name"><br>
+E-mail: <input type="text" name="email"><br>
+<input type="submit">
+</form>
+</div>
 
 </html>
