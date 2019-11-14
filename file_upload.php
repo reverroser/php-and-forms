@@ -1,53 +1,49 @@
 <?php
-// This file script handles the file uploading and shows the upload status
+if (isset($_POST['submit'])) {
+    $file = $_FILES['file'];
+// print_r($file);
 
-// Check if the form was submited
-if(isset($_POST['submit'])) {
-    // Configure upload directory and allowed file types
-    $upload_dir = 'uploads'.DIRECTORY_SEPARATOR;
-    $allowed_types = array('jpg', 'png', 'txt', 'pdf');
+$fileName = $_FILES['file']['name'];
+$fileTmpName = $_FILES['file']['tmp_name'];
+$fileSize = $_FILES['file']['size'];
+$fileError = $_FILES['file']['error'];
+$fileType = $_FILES['file']['type'];
+// to take appart a string that has the name.type, so we can check the type
+$fileExt = explode('.', $fileName);
+// after exploding the string, we get an array. To get the last item of the array
+// (that is going to be the type) we want to put it in lower case:
+$fileActualExt = strtolower(end($fileExt));
 
-    //Define maxsize for files i.e 4MB
-    $maxsize = 4000000;
+// this are the files extentions we want to allow to be uploaded
 
-    //Checks if user sent an empty form
-    if(!empty(array_filter($_FILES['files']['name']))) {
-        //Loop through each file in files[] array
-        foreach ($_FILES['files']['name'] as $key => $value)
-            $file_tmpname = $_FILES['files']['tmp_name'][$key];
-            $file_name = $_FILES['files']['name'][$key];
-            $file_size = $_FILES['files']['size'][$key];
-            $file_ext = pathinfo($file_name, PATHINFO_EXTENSION);
+$allowed = array('jpg', 'png', 'txt', 'pdf');
 
-            // Set upload file path
-            $filepath = $upload_dir.$file_name;
-
-            // Check file type is allowed or not
-            if(in_array(strtolower($file_ext), $allowed_types)) {
-                // Verify file size - 4MB max
-                if($file_size > $maxsize)
-                    echo "Error: File size is larger than the allowed limit.";
-                // If file with name already exists then append time in front
-                // of name of the file to avoid overwriting of file
-                if(file_exists($filepath)) {
-                    $filepath = $upload_dir.time().$file_name;
-                    if(move_uploaded_file($file_tmpname, $filepath)) {
-                        echo "{$file_name} successfully uploaded <br />";
-                    }
-                    else {
-                        echo "Error uploading {$file_name} <br />";
-                    }
-                }
-            else {
-                if(move_uploaded_file($file_tmpname, $filepath)) {
-                    echo "{$file_name} successfully uploaded <br />";
-                }
+//let's check if any of the extentions allowed are inside the $fileActualExt:
+    if (in_array($fileActualExt, $allowed)) {
+        //check if there hasn't been any error
+        if ($fileError === 0) {
+            //check if the size is correct:
+            if ($fileSize < 4000000) {
+                // Prevent the file names to be repeated:
+                // this uniqid gives a unic id based on thereal time microseconds that the file has been uploaded
+                // and we concatenate the file extention to the file name given
+                $fileNameNew = uniqid('', true).".".$fileActualExt;
+                //we say where we want to upload the file, the destination. With the new name given.
+                $fileDestination = 'uploads/'.$fileNameNew;
+                //create a function that moves the file from the temporay location ($fileTmpName)to the location we want to 
+                //be located to ($fileDestination)
+                move_uploaded_file($fileTmpName, $fileDestination);
+                header("Location: index.php?uploadsucess");
+            }else {
+                echo "Your file was too heavy";
             }
-        }
-    else {
-        // If no files selected
-        echo "No files selected.";
+
+        }else {
+        echo "There was an error uploading your file";
     }
+    }else {
+        echo "You cannot upload files of this type";
     }
+
 }
 ?>

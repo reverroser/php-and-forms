@@ -15,7 +15,7 @@ is sent to the welcome php file and then information is displayed through echoin
 all the variables. -->
     <div class="form-container">
         <h1>Form with POST method</h1>
-        <form action="welcome_post.php" method="post">
+        <form action="welcome_post.php" method="POST">
             Name: <input type="text" name="name"><br>
             E-mail: <input type="text" name="email"><br>
             <input type="submit">
@@ -28,7 +28,7 @@ is sent to the welcome php file and then information is displayed through echoin
 all the variables. -->
     <div class="form-container">
         <h1>Form with GET method</h1>
-        <form action="welcome_get.php" method="get">
+        <form action="welcome_get.php" method="GET">
             Name: <input type="text" name="name"><br>
             E-mail: <input type="text" name="email"><br>
             <input type="submit">
@@ -41,10 +41,11 @@ using the POST method to send data -->
     <div class="form-container">
         <h1>Select and upload multiple files to the server</h1>
         <!--The 'multipart/form-data' value is required for uploading files in forms.-->
-        <form action="file_upload.php" method="POST" enctype="multiple/form-data">
+    
+        <form action="file_upload.php" method="POST" enctype="multipart/form-data">
         <p> Select files to upload </p>    
-        <input type="file" name="files[]" multiple>
-            <input type="submit" name="submit" value="Upload">
+        <input type="file" name="file" multiple>
+            <button type="submit" name="submit">UPLOAD</button>
         </form>
     </div>
 </body>
