@@ -44,7 +44,7 @@ using the POST method to send data -->
     
         <form action="file_upload.php" method="POST" enctype="multipart/form-data">
         <p> Select files to upload </p>    
-        <input type="file" name="file" multiple>
+        <input type="file" name="file[]" multiple>
             <button type="submit" name="submit">UPLOAD</button>
         </form>
     </div>
