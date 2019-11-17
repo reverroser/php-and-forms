@@ -1,0 +1,12 @@
+h1 {
+    margin-top: 0;
+}
+
+.form-container {
+    font-family: 'Alata', sans-serif;
+    max-width: 400px;
+    border: thin solid #0418f4;
+    border-radius: 8px;
+    margin: 24px auto;
+    padding: 32px;
+}

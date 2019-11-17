@@ -32,20 +32,28 @@ for ($i=0; $i < sizeof($file); $i++) {
                         mkdir('uploads/'.date("d-m-Y"),0777);
                         move_uploaded_file($fileTmpName, $directoryStorage.$fileName);
                     } else{
-                        // Check if the file name already exists. 
-                        // second paramether "array" in method "array_diff" removes the first dots in the array.
-                        $newFileName = $fileName;
+                        // Init duplicated files count.
+                        $duplicatedFilesCount = 0;
+                        // This is needed to compare the file name and the value without extension.
+                        $baseFileName = basename($fileName, ".".$fileActualExt);
+                        // Second paramether "array" in method "array_diff" removes the first dots in the array.
                         $scanned_directory = array_diff(scandir($directoryStorage), array('..', '.'));
                         foreach ($scanned_directory as $key => $value) {
-                            print_r($value);
-                            print_r($fileName);
-                            if ($value === $fileName) {
-                                //TODO: number needs to be dynamic
-                                $newFileName = basename($fileName, '.'.$fileActualExt) . "_1." . $fileActualExt;
+                            // This is needed to compare the file name and the value without extension.
+                            $baseValue = basename($value, ".".$fileActualExt);
+                            // If the file name exist within the value increment the duplicated files count.
+                            if (strpos($baseValue, $baseFileName) !== false) {
+                                $duplicatedFilesCount++;
                             }
                         }
-                        move_uploaded_file($fileTmpName, $directoryStorage.$newFileName);
+                        // If there are duplicated files, use the count to set the preffix "_n" to the file name.
+                        if ($duplicatedFilesCount > 0) {
+                            $fileName = $baseFileName."_".$duplicatedFilesCount.".".$fileActualExt;
+                        }
+                        move_uploaded_file($fileTmpName, $directoryStorage.$fileName);
                     }
+                    // On success, redirect to index.php
+                    header('Location: index.php?uploadSuccess');
                 } else {
                     echo "Your file was too heavy";
                 }
