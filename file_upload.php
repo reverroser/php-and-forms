@@ -34,15 +34,17 @@ for ($i=0; $i < sizeof($file); $i++) {
                     } else{
                         // Check if the file name already exists. 
                         // second paramether "array" in method "array_diff" removes the first dots in the array.
+                        $newFileName = $fileName;
                         $scanned_directory = array_diff(scandir($directoryStorage), array('..', '.'));
                         foreach ($scanned_directory as $key => $value) {
                             print_r($value);
                             print_r($fileName);
                             if ($value === $fileName) {
-                                echo("they have the same name");
+                                //TODO: number needs to be dynamic
+                                $newFileName = basename($fileName, '.'.$fileActualExt) . "_1." . $fileActualExt;
                             }
                         }
-                        move_uploaded_file($fileTmpName, $directoryStorage.$fileName);
+                        move_uploaded_file($fileTmpName, $directoryStorage.$newFileName);
                     }
                 } else {
                     echo "Your file was too heavy";
